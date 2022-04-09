@@ -1,4 +1,4 @@
-package tun
+package tun_int
 
 import "github.com/songgao/water"
 
