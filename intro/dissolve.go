@@ -48,7 +48,7 @@ func DissolveRun(r *cmd.Root, c *cmd.Sub) {
 
 	err0 := process.Signal(os.Interrupt)
 
-	err1 := tun_int.Delete(args.InterfaceName)
+	err1 := tun.Delete(args.InterfaceName)
 
 	// Different types of systems may need the tun devices destroyed first or
 	// the process to exit first don't worry as long as one of these two has
