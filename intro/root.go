@@ -29,9 +29,8 @@ func init() {
 
 	cmd.Register(&cmd.Help)
 	cmd.Register(&Init)
-	cmd.Register(&Up)
-	cmd.Register(&Down)
-	cmd.Register(&cmd.Version)
+	cmd.Register(&Form)
+	cmd.Register(&Dissole)
 }
 
 func checkErr(err error) {
