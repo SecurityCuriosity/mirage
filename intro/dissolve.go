@@ -11,7 +11,7 @@ import (
 )
 
 // Dissolve brings down a Mirage interface and removes it from the system.
-var Dissove = cmd.Sub{
+var Dissolve = cmd.Sub{
 	Name:  "dissolve",
 	Alias: "d",
 	Short: "Bring Down A Mirage Interface.",
