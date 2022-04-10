@@ -2,9 +2,7 @@ package libp2p
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"sync"
 
 	"github.com/ipfs/go-datastore"
 	"github.com/libp2p/go-libp2p"
