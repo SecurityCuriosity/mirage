@@ -47,8 +47,8 @@ func InitRun(r *cmd.Root, c *cmd.Sub) {
 	checkErr(err)
 
 	// Setup an initial default command.
-	new := config.Config{
-		Interface: config.Interface{
+	new := configs.Config{
+		Interface: configs.Interface{
 			Name:       args.InterfaceName,
 			ListenPort: 7788,
 			Address:    "10.0.0.1/24",
