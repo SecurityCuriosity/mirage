@@ -4,8 +4,6 @@
 package tun_int
 
 import (
-	"errors"
-
 	"github.com/songgao/water"
 	"github.com/vishvananda/netlink"
 )
