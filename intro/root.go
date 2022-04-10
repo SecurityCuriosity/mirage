@@ -30,7 +30,7 @@ func init() {
 	cmd.Register(&cmd.Help)
 	cmd.Register(&Init)
 	cmd.Register(&Form)
-	cmd.Register(&Dissole)
+	cmd.Register(&Dissolve)
 }
 
 func checkErr(err error) {
