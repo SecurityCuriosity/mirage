@@ -19,7 +19,7 @@ import (
 	"github.com/DataDrake/cli-ng/v2/cmd"
 	"mirage.com/configs"
 	"mirage.com/libp2p"
-	"mirage.com/tun_int"
+	tun "mirage.com/tun_int"
 	"github.com/libp2p/go-libp2p-core/host"
 	"github.com/libp2p/go-libp2p-core/network"
 	"github.com/libp2p/go-libp2p-core/peer"
@@ -72,7 +72,7 @@ func FormRun(r *cmd.Root, c *cmd.Sub) {
 	}
 
 	// Read in configuration from file.
-	cfg, err := config.Read(configPath)
+	cfg, err := configs.Read(configPath)
 	checkErr(err)
 
 	// Daemonize so that the process does not lock the terminal
@@ -115,7 +115,7 @@ func FormRun(r *cmd.Root, c *cmd.Sub) {
 	checkErr(err)
 
 	// Create P2P Node
-	host, dht, err := p2p.CreateNode(
+	host, dht, err := libp2p.CreateNode(
 		ctx,
 		cfg.Interface.PrivateKey,
 		port,
@@ -134,7 +134,7 @@ func FormRun(r *cmd.Root, c *cmd.Sub) {
 	fmt.Println("[+] Setting Up Node Discovery via DHT")
 
 	// Setup P2P Discovery
-	go p2p.Discover(ctx, host, dht, peerTable)
+	go libp2p.Discover(ctx, host, dht, peerTable)
 	go prettyDiscovery(ctx, host, peerTable)
 
 	// Configure path for lock - this is stop multiple processes from interacting with a single file
@@ -148,7 +148,7 @@ func FormRun(r *cmd.Root, c *cmd.Sub) {
 	checkErr(err)
 
 	// Bring Up TUN Device
-	err = tunDev.Form()
+	err = tunDev.Up()
 	if err != nil {
 		checkErr(errors.New("unable to bring up tun device"))
 	}
@@ -196,7 +196,7 @@ func FormRun(r *cmd.Root, c *cmd.Sub) {
 		// Check if the destination of the packet is a known peer to
 		// the interface.
 		if peer, ok := peerTable[dst]; ok {
-			stream, err = host.NewStream(ctx, peer, p2p.Protocol)
+			stream, err = host.NewStream(ctx, peer, libp2p.Protocol)
 			if err != nil {
 				continue
 			}
@@ -245,7 +245,7 @@ func signalExit(host host.Host, lockPath string) {
 
 // createDaemon handles creating an independent background process
 // Not 100% on how all of this works - tons of googling
-func createDaemon(cfg *config.Config) error {
+func createDaemon(cfg *configs.Config) error {
 	path, err := os.Executable()
 	checkErr(err)
 
@@ -351,7 +351,7 @@ func prettyDiscovery(ctx context.Context, node host.Host, peerTable map[string]p
 	}
 	for len(tempTable) > 0 {
 		for ip, id := range tempTable {
-			stream, err := node.NewStream(ctx, id, p2p.Protocol)
+			stream, err := node.NewStream(ctx, id, libp2p.Protocol)
 			if err != nil && (strings.HasPrefix(err.Error(), "failed to dial") ||
 				strings.HasPrefix(err.Error(), "no addresses")) {
 				// Attempt to connect to peers slowly when they aren't found.
