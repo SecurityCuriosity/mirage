@@ -1,7 +1,7 @@
 //go:build linux
 // +build linux
 
-package tun
+package tun_int
 
 import (
 	"errors"
